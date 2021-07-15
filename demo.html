@@ -27,6 +27,12 @@
 <div class="box"></div>
 <script>
     let box = document.querySelector(' .box');
+        HTML = document.documentElement,
+        minL = 0,
+        minT = 0,
+        maxL = HTML.clientWidth - box.offsetWidth,//(最大:视口大小-box的大小)
+        maxT = HTML.clientHeight - box.offsetHeight
+
     //鼠标按下开始拖拽
     const down = function down(ev) {
 //记录鼠标开始位置和盒子的开始位置:这些信息未来会在鼠标移动的方法中使用(把信息挂在到盒子的自定义属性上,后期在其他的方法中只要获取到当前盒子DOM,就可以获取到记录的这些开始信息了,当然放到任何地方都行,甚至全局变量也可以)
@@ -49,6 +55,8 @@
         //获取盒子当前的位置
         let curL = ev.clientX - this.startX + this. startL,
             curT = ev.clientY - this.startY + this.startT;
+        curL =  curL < minL ? minL : (curL > maxL ? maxL : curL);//在大小之间
+        curT =  curT < minT ? minT : (curT > maxT ? maxT : curT);//在大小之间
         this.style.left =`${curL}px` ;
         this.style.top =`${curT}px` ;
     }
