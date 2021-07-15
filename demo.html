@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .box {
+            position: fixed;
+            top: 100px;
+            left: 200px;
+            width: 100px;
+            height: 100px;
+            background: lightblue;
+            cursor: move;
+        }
+
+    </style>
+</head>
+<body>
+<div class="box"></div>
+<script>
+    let box = document.querySelector(' .box');
+    //鼠标按下开始拖拽
+    const down = function down(ev) {
+//记录鼠标开始位置和盒子的开始位置:这些信息未来会在鼠标移动的方法中使用(把信息挂在到盒子的自定义属性上,后期在其他的方法中只要获取到当前盒子DOM,就可以获取到记录的这些开始信息了,当然放到任何地方都行,甚至全局变量也可以)
+        // this -> box
+        let {
+            top,
+            left
+        } = this.getBoundingClientRect();
+        this.startT = top;
+        this.startL = left;
+        this.startX = ev.clientX;
+        this.startY = ev.clientY;
+        //鼠标按下才进行事件绑定(拖拽开始)
+        this.addEventListener( 'mousemove',move)
+        this.addEventListener( 'mouseup',up)
+    };
+    //鼠标移动拖拽中
+    const move = function move(ev) {
+        // this -> box
+        //获取盒子当前的位置
+        let curL = ev.clientX - this.startX + this. startL,
+            curT = ev.clientY - this.startY + this.startT;
+        this.style.left =`${curL}px` ;
+        this.style.top =`${curT}px` ;
+    }
+        //鼠标抬起拖拽结束
+    const up = function up(ev) {
+        // this -> box
+        //移除事件绑定来结束拖拽
+        this.removeEventListener( 'mousemove', move) ;
+        this.removeEventListener( 'mouseup', up);
+    };
+    box.addEventListener('mousedown',down) ;
+
+
+
+</script>
+</body>
+</html>
