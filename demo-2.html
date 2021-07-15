@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .box {
+            position: fixed;
+            top: 100px;
+            left: 200px;
+            width: 100px;
+            height: 100px;
+            background: lightblue;
+            cursor: move;
+        }
+
+    </style>
+</head>
+<body>
+<div class="box"></div>
+<script>
+    let box = document.querySelector('.box');
+        HTML = document.documentElement,
+        minL = 0,
+        minT = 0,
+        maxL = HTML.clientWidth - box.offsetWidth,
+        maxT = HTML.clientHeight - box.offsetHeight
+    const down = function down(ev) {
+        let {
+            top,
+            left
+        } = this.getBoundingClientRect();
+        this.startT = top;
+        this.startL = left;
+        this.startX = ev.clientX;
+        this.startY = ev.clientY;
+
+        //注意:保证move/up中的this还需要是盒子,并且好需要烤鱼好溢出的时候如何移除
+        this._move= move.bind(this)
+        this._up = up.bind(this)
+        window.addEventListener( 'mousemove',this._move)
+        window.addEventListener( 'mouseup',this._up)
+    };
+    const move = function move(ev) {
+        let curL = ev.clientX - this.startX + this. startL,
+            curT = ev.clientY - this.startY + this.startT;
+        curL =  curL < minL ? minL : (curL > maxL ? maxL : curL);
+        curT =  curT < minT ? minT : (curT > maxT ? maxT : curT);
+        this.style.left =`${curL}px` ;
+        this.style.top =`${curT}px` ;
+    }
+
+    const up = function up(ev) {
+        // this -> box
+        window.removeEventListener( 'mousemove', this._move) ;
+        window.removeEventListener( 'mouseup', this._up);
+    };
+    box.addEventListener('mousedown',down);
+
+
+
+</script>
+</body>
+</html>
