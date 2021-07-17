@@ -1,4 +1,5 @@
 # JS拖拽效果demo
+[GithubPage演示](https://mtt3366.github.io/mouse-drag-effect-demo/index.html)
 demo-1.html 为普通实现
 
 demo-2.html 解决鼠标焦点丢失问题(鼠标移动过快,box跟不上),方法:将`mousemove`和`mouseup`事件的绑定和移除都放在`window`上
